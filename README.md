@@ -1,6 +1,6 @@
 # Apex
 
-This template should help get you started developing with Vue 3 in Vite.
+Apex club website.
 
 ## Recommended IDE Setup
 
