@@ -4,8 +4,10 @@ const isOpen = ref(false)
 </script>
 
 <template>
-  <header class="fixed top-0 left-0 w-full h-16 px-6 bg-black flex items-center
-                 justify-between z-50">
+  <header
+    class="fixed top-0 left-0 w-full h-16 px-6 bg-transparent
+         flex items-center justify-between z-50"
+  >
     <!-- 로고 -->
     <h1 class="text-white text-2xl font-semibold whitespace-nowrap">APEX</h1>
 
@@ -21,7 +23,7 @@ const isOpen = ref(false)
     <nav class="hidden md:flex">
       <ul class="flex gap-8 list-none m-0 p-0">
         <li
-          v-for="item in ['Home','Professor','Team','Student','Project','Contact']"
+          v-for="item in ['Home','Professor','Team','Student','Project', 'Gallery']"
           :key="item"
           class="text-white text-base cursor-pointer transition-colors
                  duration-200 hover:text-[#4174D9] whitespace-nowrap"
