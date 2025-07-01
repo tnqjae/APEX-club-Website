@@ -1,11 +1,9 @@
 <template>
   <AppHeader />
-  <HeroImage />
-  <MainPageIntroduction />
+  <Home />
 </template>
 
 <script setup>
 import AppHeader from './components/AppHeader.vue'
-import HeroImage from './components/MainPageImg.vue'
-import MainPageIntroduction from './components/MainPageIntroduction.vue'
+import Home from './views/Home.vue'
 </script>
