@@ -1,69 +1,67 @@
 <script setup>
 import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+
 const isOpen = ref(false)
+const route  = useRoute()
+
+// 라벨과 경로를 매핑
+const menu = [
+  { label: 'Home',       path: '/' },
+  { label: 'Professor',  path: '/professor' },
+  { label: 'Team',       path: '/team' },
+  { label: 'Student',    path: '/student' },
+  { label: 'Project',    path: '/project' },
+  { label: 'Gallery',    path: '/gallery' },
+]
 </script>
 
 <template>
   <header
     class="fixed top-0 left-0 w-full h-16 px-6 bg-transparent
-         flex items-center justify-between z-50"
+           flex items-center justify-between z-50"
   >
-    <!-- 로고 -->
     <h1 class="text-white text-2xl font-semibold whitespace-nowrap">APEX</h1>
 
-    <!-- 모바일 메뉴 버튼 -->
-    <button
-      class="md:hidden text-white text-3xl focus:outline-none"
-      @click="isOpen = !isOpen"
-    >
+    <!-- 햄버거 -->
+    <button class="md:hidden text-white text-3xl" @click="isOpen = !isOpen">
       ☰
     </button>
 
     <!-- 데스크톱 메뉴 -->
     <nav class="hidden md:flex">
-      <ul class="flex gap-8 list-none m-0 p-0">
-        <li
-          v-for="item in ['Home','Professor','Team','Student','Project', 'Gallery']"
-          :key="item"
-          class="text-white text-base cursor-pointer transition-colors
-                 duration-200 hover:text-[#4174D9] whitespace-nowrap"
-        >
-          {{ item }}
+      <ul class="flex gap-10 pr-6">
+        <li v-for="m in menu" :key="m.path">
+          <RouterLink
+            :to="m.path"
+            class="text-base whitespace-nowrap transition-colors duration-200"
+            :class="route.path === m.path ? 'text-[#4174D9]' : 'text-white hover:text-[#4174D9]'"
+          >
+            {{ m.label }}
+          </RouterLink>
         </li>
       </ul>
     </nav>
   </header>
 
-  <!-- 모바일 드롭다운 메뉴 -->
+  <!-- 모바일 드롭다운 -->
   <transition name="fade">
     <nav
       v-if="isOpen"
-      class="md:hidden fixed top-16 left-0 w-full bg-black/90 backdrop-blur
-             p-6 space-y-4 z-40"
+      class="md:hidden fixed top-16 left-0 w-full bg-black/90 p-6 space-y-4 z-40"
     >
       <ul>
-        <li
-          v-for="item in ['Home','Professor','Team','Student','Project','Contact']"
-          :key="item"
-          class="text-white text-lg py-1 border-b border-white/10
-                 hover:text-[#4174D9] cursor-pointer"
-          @click="isOpen=false"
-        >
-          {{ item }}
+        <li v-for="m in menu" :key="m.path">
+          <RouterLink
+            :to="m.path"
+            class="block text-lg py-1 border-b border-white/10"
+            :class="route.path === m.path ? 'text-[#4174D9]' : 'text-white hover:text-[#4174D9]'"
+            @click="isOpen = false"
+          >
+            {{ m.label }}
+          </RouterLink>
         </li>
       </ul>
     </nav>
   </transition>
 </template>
-
-<style scoped>
-/* 간단한 fade 효과 */
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.25s ease;
-}
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-</style>

@@ -4,12 +4,12 @@
 
       <!-- 프로필 이미지 -->
       <div class="w-40 h-40 rounded-full overflow-hidden border-4 border-[#4174D9]">
-        <img src="@/assets/professor.jpg" alt="Professor" class="w-full h-full object-cover" />
+        <img src="#" alt="Professor" class="w-full h-full object-cover" />
       </div>
 
       <!-- 정보 블록 -->
       <div class="flex-1 space-y-4">
-        <h2 class="text-3xl font-bold">Prof. Kim Seongwoo</h2>
+        <h2 class="text-3xl font-bold">Prof. </h2>
         <p class="text-lg text-gray-300">
           Professor, Dept. of Computer Security, Myongji College
         </p>
