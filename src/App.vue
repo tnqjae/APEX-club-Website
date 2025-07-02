@@ -1,9 +1,9 @@
 <template>
+  <router-view />
   <AppHeader />
-  <Home />
 </template>
 
 <script setup>
 import AppHeader from './components/AppHeader.vue'
-import Home from './views/Home.vue'
+import router from './router';
 </script>
