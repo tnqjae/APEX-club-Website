@@ -1,15 +1,6 @@
 <template>
   <!-- Hero Section -->
-  <section>
-    <div class="mx-auto">
-      <img
-        src="../assets/MainPage_Img.png"
-        alt="APEX 배경 이미지"
-        class="w-full h-auto block object-cover max-h-[300px] sm:max-h-[500px]"
-      />
-    </div>
-  </section>
-
+<HeroSection imageSrc="src\assets\HeroImg\MainHeroImg.jpg" altText="Main HeroImg" />
   <!-- Notification Section -->
   <section class="bg-[#0f131c] min-h-screen flex flex-col items-center py-12 px-4 sm:py-20">
     <h1 class="text-white text-xl sm:text-2xl font-bold mb-6 sm:mb-10 text-center">
@@ -36,3 +27,7 @@
     </div>
   </section>
 </template>
+
+<script setup>
+import HeroSection from '@/components/HeroSection.vue';
+</script>

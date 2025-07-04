@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
-<<<<<<< Updated upstream
 import Home       from '@/views/Home.vue'
 import Professor  from '@/views/Professor.vue'
 //import Team       from '@/views/Team.vue'
@@ -20,15 +19,5 @@ const routes = [
 export default createRouter({
   history: createWebHistory(),
   routes,
-=======
-const routers = [
-    {path : '/', component: () => import('@/views/Home.vue')},
-    {path : '/professor', component: () => import('@/view/Professor.vue')},
-
-]
-
-export default createRouter({
-    history: createWebHistory(),
-    routes,
->>>>>>> Stashed changes
 })
+
