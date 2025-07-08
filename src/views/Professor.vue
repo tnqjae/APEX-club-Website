@@ -24,7 +24,7 @@
         <p class="text-base text-gray-400">
           Ph.D.
         </p>
-        <p><a href="https://www.flaticon.com/kr/free-icons/" title="교수 아이콘">교수 아이콘 제작자: dhika.rahmat-Flaticon</a></p>
+
       </div>
     </div>
   </section>
