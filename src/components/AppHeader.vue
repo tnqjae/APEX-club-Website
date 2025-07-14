@@ -10,7 +10,6 @@ const menu = [
   { label: 'Home',       path: '/' },
   { label: 'Professor',  path: '/professor' },
   { label: 'Team',       path: '/team' },
-  { label: 'Student',    path: '/student' },
   { label: 'Project',    path: '/project' },
   { label: 'Gallery',    path: '/gallery' },
 ]
