@@ -16,7 +16,7 @@
 
     <!-- Notification Section -->
     <section class="bg-[#0f131c] flex flex-col items-center py-12 px-4 sm:py-10">
-      <h1 class="text-white text-xl sm:text-2xl font-bold mb-6 sm:mb-10 mt-1 text-center">
+      <h1 class="text-white text-xl sm:text-2xl font-bold mb-3 sm:mb-10 mt-1 text-center">
         Notification
       </h1>
       <div class="max-w-3xl w-full">
