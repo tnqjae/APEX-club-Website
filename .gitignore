@@ -29,3 +29,5 @@ coverage
 
 *.tsbuildinfo
 src/views/Professor.vue
+
+.env
