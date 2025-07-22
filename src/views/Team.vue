@@ -30,7 +30,7 @@
       <!-- Forensic Team -->
       <div>
         <h2 class="text-2xl font-bold mb-4 border-b border-gray-600 pb-2">포렌식팀 | Forensic Team</h2>
-        <p class="text-sm text-gray-400 mb-2">팀장 | Team Leader: <span class="text-white font-medium"></span></p>
+        <p class="text-sm text-gray-400 mb-2">팀장 | Team Leader: <span class="text-white font-medium">Anonymous</span></p>
         <p class="text-gray-400"> Empty </p>
       </div>
     </div>
