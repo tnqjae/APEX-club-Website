@@ -1,7 +1,6 @@
 <template>
   <div
-    class="group p-5 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full"
-  >
+    class="group p-5 rounded-2xl bg-gradient-to-br from-gray-800 to-gray-900 text-white shadow-md hover:shadow-xl transition-all duration-300 flex flex-col h-full">
     <!-- 상단 상태 -->
     <div class="flex justify-between items-center mb-2">
       <span class="text-xs font-semibold px-2 py-1 rounded bg-blue-600/60 text-white uppercase tracking-wide">
@@ -23,39 +22,31 @@
 
     <!-- 날짜 / 인원 -->
     <div class="mt-3 text-xs text-gray-400 italic">
-      {{ date }} · {{ participants }}
+      {{ date }} · {{ participants.length }}명
+    </div>
+
+    <div class="mt-3 text-xs text-gray-400 italic">
+      프로젝트 참여 명단: {{ participants.length ? participants.join(', ') : '정보 없음' }}
     </div>
 
     <!-- 기술 스택 -->
     <div v-if="techStack.length" class="flex flex-wrap gap-2 mt-4">
-      <span
-        v-for="tech in techStack"
-        :key="tech"
-        class="bg-blue-700/40 text-blue-200 px-2 py-1 rounded-full text-xs"
-      >
+      <span v-for="tech in techStack" :key="tech" class="bg-blue-700/40 text-blue-200 px-2 py-1 rounded-full text-xs">
         {{ tech }}
       </span>
     </div>
 
     <!-- 태그 -->
     <div v-if="tags.length" class="flex flex-wrap gap-2 mt-2">
-      <span
-        v-for="tag in tags"
-        :key="tag"
-        class="border border-gray-600 px-2 py-1 rounded-full text-xs text-gray-300"
-      >
+      <span v-for="tag in tags" :key="tag" class="border border-gray-600 px-2 py-1 rounded-full text-xs text-gray-300">
         #{{ tag }}
       </span>
     </div>
 
     <!-- 링크 버튼 -->
     <div v-if="link" class="mt-auto pt-6">
-      <a
-        :href="link"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-block px-4 py-2 text-sm font-semibold rounded bg-blue-600 hover:bg-blue-700 transition-colors"
-      >
+      <a :href="link" target="_blank" rel="noopener noreferrer"
+        class="inline-block px-4 py-2 text-sm font-semibold rounded bg-blue-600 hover:bg-blue-700 transition-colors">
         프로젝트 코드 →
       </a>
     </div>
@@ -68,7 +59,10 @@ defineProps({
   title: String,
   description: String,
   category: String,
-  participants: String,
+  participants: {
+    type: Array,
+    default: () => [],
+  },
   date: String,
   techStack: {
     type: Array,
@@ -81,5 +75,6 @@ defineProps({
   link: String,
   supervisor: String,
   isTeamProject: Boolean,
+  participant_count: Number,
 })
 </script>

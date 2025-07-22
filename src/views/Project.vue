@@ -16,7 +16,7 @@
         <div class="grid md:grid-cols-2 gap-8">
           <ProjectCard v-for="project in filteredProjects(statusKey)" :key="project.id" :status="project.status"
             :title="project.title" :description="project.description" :category="project.category"
-            :participants="project.participants" :date="project.date" :techStack="project.tech_stack"
+            :participants="project.participants" :date="project.date" :paritcipant_count="project.paritcipant_count" :techStack="project.tech_stack"
             :tags="project.tags" :link="project.link" :supervisor="project.supervisor"
             :isTeamProject="project.is_team_project" />
         </div>
