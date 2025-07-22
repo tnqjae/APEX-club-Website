@@ -9,6 +9,7 @@ const route  = useRoute()
 const menu = [
   { label: 'Home',       path: '/' },
   { label: 'Professor',  path: '/professor' },
+  { label: 'Staff',      path: '/staff'},
   { label: 'Team',       path: '/team' },
   { label: 'Project',    path: '/project' },
   { label: 'Gallery',    path: '/gallery' },
