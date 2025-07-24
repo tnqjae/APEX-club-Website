@@ -37,7 +37,7 @@ onMounted(async () => {
     }
   } catch (err) {
     SearchSlash.removeItem('adminToken')
-    router.push('/adminMain')
+    router.push('/adminStaff')
   }
 })
 </script>
