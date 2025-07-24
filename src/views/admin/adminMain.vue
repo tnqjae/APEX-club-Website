@@ -46,11 +46,12 @@
 </template>
 
 <script setup>
+import { SearchSlash } from 'lucide-vue-next'
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const token = localStorage.getItem('admin_token')
+const token = sessionStorage.getItem('adminToken')
 const isAuthorized = ref(false)
 
 onMounted(async () => {
@@ -76,8 +77,8 @@ onMounted(async () => {
       throw new Error('Invalid token')
     }
   } catch (err) {
-    localStorage.removeItem('admin_token')
-    router.push('/admin/login')
+    SearchSlash.removeItem('adminToken')
+    router.push('/adminMain')
   }
 })
 </script>

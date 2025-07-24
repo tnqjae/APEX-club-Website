@@ -65,6 +65,7 @@ const handleLogin = async () => {
 
     if (response.ok && data.success) {
       alert(`환영합니다, 관리자님`);
+      sessionStorage.setItem('adminToken', data.token)
       //리다이렉션
       window.location.href = '/adminMain';
     } else {
