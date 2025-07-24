@@ -46,4 +46,38 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
+const token = localStorage.getItem('admin_token')
+const isAuthorized = ref(false)
+
+onMounted(async () => {
+  if (!token) {
+    alert("관리자 권한이 없습니다. 로그인 해주세요.")
+    router.push('/admin-login')  // 토큰 없으면 로그인으로
+    return
+  }
+
+  try {
+    const res = await fetch(import.meta.env.VITE_ADVERIFY_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`
+      }
+    })
+    const result = await res.json()
+
+    if (res.ok && result.success) {
+      isAuthorized.value = true
+    } else {
+      throw new Error('Invalid token')
+    }
+  } catch (err) {
+    localStorage.removeItem('admin_token')
+    router.push('/admin/login')
+  }
+})
 </script>
