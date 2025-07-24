@@ -57,7 +57,6 @@ const isAuthorized = ref(false)
 onMounted(async () => {
   if (!token) {
     alert("관리자 권한이 없습니다. 로그인 해주세요.")
-    router.push('/admin-login')  // 토큰 없으면 로그인으로
     return
   }
 
