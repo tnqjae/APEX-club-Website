@@ -36,8 +36,11 @@
         <button class="bg-green-600 hover:bg-green-700 py-4 px-6 rounded-xl text-white font-semibold text-lg">
           갤러리 관리
         </button>
-        <button class="bg-yellow-500 hover:bg-yellow-600 py-4 px-6 rounded-xl text-white font-semibold text-lg">
-          사용자 관리
+        <button
+          class="bg-yellow-500 hover:bg-yellow-600 py-4 px-6 rounded-xl text-white font-semibold text-lg"
+          @click="goToStaff"
+        >
+          운영진 관리
         </button>
       </div>
 
@@ -54,6 +57,10 @@ const router = useRouter()
 const token = sessionStorage.getItem('adminToken')
 const isAuthorized = ref(false)
 
+const goToStaff = () => {
+  router.push('/adminStaff')
+}
+
 onMounted(async () => {
   if (!token) {
     alert("관리자 권한이 없습니다. 로그인 해주세요.")
@@ -61,7 +68,7 @@ onMounted(async () => {
   }
 
   try {
-    const res = await fetch(import.meta.env.VITE_ADVERIFY_URL, {
+    const res = await fetch(import.meta.env.VITE_AUTH_API, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
