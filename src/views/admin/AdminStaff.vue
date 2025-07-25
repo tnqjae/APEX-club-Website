@@ -78,15 +78,19 @@ async function fetchStaffData() {
 
 
 async function createStaff(payload) {
-  const res = await fetch(API_BASE, {
+  const res = await fetch(import.meta.env.VITE_STAFF_ADD_API, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...authHeaders()
+      Authorization: `Bearer ${sessionStorage.getItem('adminToken')}`,
     },
-    body: JSON.stringify(payload)
-  })
-  if (!res.ok) throw new Error('create failed')
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error(err.error || 'create failed');
+  }
+  return res.json();
 }
 
 async function updateStaff(id, payload) {
@@ -372,8 +376,12 @@ onMounted(() => {
           </div>
           <div>
             <label class="block text-sm text-gray-300 mb-1">직책</label>
-            <input v-model="form.role" type="text"
-              class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white" />
+            <select v-model="form.role" type="text"
+              class="w-full bg-gray-800 border border-gray-700 rounded px-3 py-2 text-white">
+              <option value="회장">회장</option>
+              <option value="부회장">부회장</option>
+              <option value="운영진">운영진</option>
+            </select>
           </div>
 
           <div>
@@ -399,10 +407,10 @@ onMounted(() => {
         </div>
 
         <div class="flex justify-end mt-6 space-x-2">
-          <button class="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700 text-sm" @click="closeModal">
+          <button class="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700 text-sm text-white" @click="closeModal">
             취소
           </button>
-          <button class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-sm" @click="save">
+          <button class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-sm text-white" @click="save">
             저장
           </button>
         </div>
