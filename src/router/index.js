@@ -8,6 +8,7 @@ import Gallery    from '@/views/user/Gallery.vue'
 import Staff from '@/views/user/Staff.vue'
 import Board from '@/views/user/Board.vue'
 import Professor from '@/views/user/Professor.vue'
+import Login from '@/views/user/UserLogin.vue'
 
 //Admin areas
 import AdminLogin from '@/views/admin/AdminLogin.vue'
@@ -24,6 +25,7 @@ const routes = [
   { path: '/project',    component: Project    },
   { path: '/board',       component: Board     },
   { path: '/gallery',    component: Gallery    },
+  { path: '/login',      component: Login},
   // Admin routes
   { path: '/admin-login', component: AdminLogin },
   { path: '/adminMain', component: AdminMain  },
