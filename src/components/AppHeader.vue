@@ -14,6 +14,7 @@ const menu = [
   { label: 'Project', path: '/project' },
   { label: 'Board', path: '/board' },
   { label: 'Gallery', path: '/gallery' },
+  { label: 'Login',  path: '/login'},
 ]
 </script>
 
