@@ -42,6 +42,12 @@
         >
           운영진 관리
         </button>
+        <button
+          class="bg-yellow-500 hover:bg-yellow-600 py-4 px-6 rounded-xl text-white font-semibold text-lg"
+          @click="goToUserManage"
+        >
+          회원 관리
+        </button>
       </div>
 
     </div>
@@ -59,6 +65,10 @@ const isAuthorized = ref(false)
 
 const goToStaff = () => {
   router.push('/adminStaff')
+}
+
+const goToUserMange = () => {
+  router.push('/usermange')
 }
 
 onMounted(async () => {
