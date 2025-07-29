@@ -40,7 +40,7 @@ onMounted(async () => {
     if (response.ok && result.exists) {
       alert(`환영합니다, ${nickname}님!`)
       sessionStorage.setItem('userToken', result.token ?? '')
-      router.replace('/main')
+      router.replace('/')
     } else {
       alert('회원 정보가 없습니다. 회원가입으로 이동합니다.')
       router.replace({
