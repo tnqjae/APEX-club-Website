@@ -30,7 +30,8 @@
 
       <!-- 주요 관리 기능 버튼 -->
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12">
-        <button class="bg-blue-600 hover:bg-blue-700 py-4 px-6 rounded-xl text-white font-semibold text-lg">
+        <button class="bg-blue-600 hover:bg-blue-700 py-4 px-6 rounded-xl text-white font-semibold text-lg"
+        @click="goToProject">
           프로젝트 관리
         </button>
         <button class="bg-green-600 hover:bg-green-700 py-4 px-6 rounded-xl text-white font-semibold text-lg">
@@ -67,13 +68,18 @@ const goToStaff = () => {
   router.push('/adminStaff')
 }
 
-const goToUserMange = () => {
-  router.push('/usermange')
+const goToUserManage = () => {
+  router.push('/usermanage')
+}
+
+const goToProject = () => {
+  router.push('/adminproject')
 }
 
 onMounted(async () => {
   if (!token) {
     alert("관리자 권한이 없습니다. 로그인 해주세요.")
+    router.push('/')
     return
   }
 

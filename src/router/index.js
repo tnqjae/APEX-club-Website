@@ -14,7 +14,9 @@ import Register from '@/views/login/SignUp.vue'
 import AdminLogin from '@/views/admin/AdminLogin.vue'
 import AdminMain from '@/views/admin/adminMain.vue'
 import AdminStaff from '@/views/admin/AdminStaff.vue'
-import UserMange from '@/views/admin/UserMange.vue'
+import UserManage from '@/views/admin/UserManage.vue'
+import ProjectManage from '@/views/admin/AdminProject.vue'
+
 
 import KakaoRedirectHandler from '@/views/login/KakaoRedirectHandler.vue'
 // Importing views for the router
@@ -33,7 +35,8 @@ const routes = [
   { path: '/admin-login', component: AdminLogin     },
   { path: '/adminMain', component: AdminMain        },
   { path: '/adminStaff', component: AdminStaff      },
-  { path: '/usermange',   component: UserMange},
+  { path: '/usermanage',   component: UserManage      },
+  { path: '/adminproject',   component: ProjectManage      },
 
   //router
   { path: '/kakao-callback', component: KakaoRedirectHandler }
