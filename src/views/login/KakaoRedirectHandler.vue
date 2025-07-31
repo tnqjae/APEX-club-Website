@@ -37,20 +37,32 @@ onMounted(async () => {
     })
     const result = await response.json()
 
-    if (response.ok && result.exists) {
+    console.log('서버 응답:', result)  // ✅ 디버깅용 로그 추가
+
+    if (response.ok && result.exists && result.state === 'ACCEPTED') {
       alert(`환영합니다, ${nickname}님!`)
       sessionStorage.setItem('userToken', result.token ?? '')
       router.replace('/')
-    } else {
+    } else if (response.ok && result.exists && result.state === 'PENDING') {
+      alert('가입 승인 대기 중입니다.')
+      router.replace('/')
+    } else if (response.ok && result.exists && result.state === 'DENIED') {
+      alert('동아리 회원만 가입가능합니다.')
+      router.replace('/')
+    } else if (response.ok && result.exists === false) {
       alert('회원 정보가 없습니다. 회원가입으로 이동합니다.')
       router.replace({
         path: '/register',
         query: { kakaoId, name: nickname },
       })
+    } else {
+      console.error('응답 상태 및 내용 확인:', response.status, result)
+      alert('알 수 없는 오류가 발생했습니다.')
     }
-  } catch (e) {
-    console.error(e)
-    alert('로그인 중 오류 발생')
+
+  } catch (err) {
+    console.error('에러:', err)
+    alert('로그인 처리 중 오류가 발생했습니다.')
   }
 })
 
@@ -69,6 +81,7 @@ async function exchangeToken(code: string) {
     },
     body: body.toString(),
   })
+
   const data = await res.json()
   if (!res.ok || data.error) {
     throw new Error(data.error_description || data.error || 'token error')
