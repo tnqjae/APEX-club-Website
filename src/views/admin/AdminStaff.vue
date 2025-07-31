@@ -1,9 +1,11 @@
 <script setup>
 import { ref, reactive, onMounted } from 'vue'
-
+import { useRouter } from 'vue-router'
 /**
  * 상태
  */
+
+const router = useRouter()
 const presidents = ref([])        // active & 회장/부회장
 const staffs = ref([])            // active & 운영진
 const historyPresident = ref([])  // retired (역대)
@@ -25,17 +27,51 @@ const form = reactive({
   status: 'active' // active | retired
 })
 
+function authHeaders() {
+  const token = sessionStorage.getItem('adminToken')
+  return token ? { Authorization: `Bearer ${token}` } : {}
+}
 /**
  * API 유틸
  */
 const API_BASE = import.meta.env.VITE_STAFF_API
 
-function authHeaders() {
+onMounted(async () => {
   const token = sessionStorage.getItem('adminToken')
-  return token
-    ? { Authorization: `Bearer ${token}` }
-    : {}
-}
+
+  // 토큰 없으면 바로 리다이렉션
+  if (!token) {
+    router.push('/')
+    return
+  }
+
+  try {
+    const res = await fetch(import.meta.env.VITE_AUTH_API, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+
+    if (!res.ok) throw new Error('Unauthorized')
+
+    const data = await res.json()
+
+    // 상태값 검사 예: {"state": "ACCEPTED"}
+    if (!data.success) {
+      alert("비정상 접근")
+      router.push('/')
+      return
+    }
+
+    // 인증 성공 시 데이터 fetch
+    fetchStaffData()
+  } catch (e) {
+    console.error('인증 실패:', e)
+    router.push('/')
+  }
+})
+
 
 /**
  * Fetch
@@ -194,9 +230,7 @@ function getList(group) {
   return null
 }
 
-onMounted(() => {
-  fetchStaffData()
-})
+
 </script>
 
 <template>

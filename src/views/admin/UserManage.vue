@@ -87,8 +87,11 @@
   </div>
 </template>
 
-<script setup>
+<<script setup>
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const pendingUsers = ref([])
 const approvedUsers = ref([])
@@ -98,18 +101,56 @@ const errorMsg = ref('')
 const API_URL = import.meta.env.VITE_USER_LIST_API
 const ACCEPT_API = import.meta.env.VITE_USER_ACCEPT_API
 const REJECT_API = import.meta.env.VITE_USER_REJECT_API
+const AUTH_API = import.meta.env.VITE_AUTH_API
 
-const token = sessionStorage.getItem('adminToken')
-const headers = {
-  'Content-Type': 'application/json',
-  Authorization: `Bearer ${token}`
+function closeModal() {
+  showModal.value = false
 }
+
+function authHeaders() {
+  const token = sessionStorage.getItem('adminToken')
+  return token ? { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' } : {}
+}
+
+onMounted(async () => {
+  const token = sessionStorage.getItem('adminToken')
+
+  if (!token) {
+    router.push('/')
+    return
+  }
+
+  try {
+    const res = await fetch(AUTH_API, {
+      headers: authHeaders()
+    })
+
+    if (!res.ok) throw new Error('Unauthorized')
+
+    const data = await res.json()
+
+    if (!data.success) {
+      alert('비정상 접근')
+      router.push('/')
+      return
+    }
+
+    fetchUsers()
+  } catch (e) {
+    console.error('인증 실패:', e)
+    router.push('/')
+  }
+})
+
 
 async function fetchUsers() {
   loading.value = true
   errorMsg.value = ''
   try {
-    const res = await fetch(API_URL, { method: 'GET', headers })
+    const res = await fetch(API_URL, {
+      method: 'GET',
+      headers: authHeaders()
+    })
     if (!res.ok) throw new Error('유저 조회 실패')
 
     const data = await res.json()
@@ -123,12 +164,13 @@ async function fetchUsers() {
   }
 }
 
+
 async function updateUserStatus(userId, isAccept) {
   const url = isAccept ? ACCEPT_API : REJECT_API
   try {
     const res = await fetch(url, {
       method: 'POST',
-      headers,
+      headers: authHeaders(),
       body: JSON.stringify({ USER_ID: userId })
     })
     if (!res.ok) throw new Error(isAccept ? '수락 실패' : '거절 실패')
@@ -145,6 +187,4 @@ function acceptUser(userId) {
 function rejectUser(userId) {
   updateUserStatus(userId, false)
 }
-
-onMounted(fetchUsers)
 </script>
