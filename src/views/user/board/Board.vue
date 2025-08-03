@@ -15,7 +15,8 @@
       <div>
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-bold border-b border-gray-600 pb-2">프로젝트/대회 팀원 모집</h2>
-          <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-semibold">
+          <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-semibold"
+          @click="clikProject">
             + 더보기
           </button>
         </div>
@@ -23,14 +24,13 @@
         <div class="overflow-x-auto rounded-lg border border-gray-700">
           <table class="min-w-full text-sm">
             <thead class="bg-[#1a1f2c] text-gray-300">
-              <tr>
-                <th class="px-2 py-3 text-center">주제</th>
-                <th class="px-4 py-3 text-center">작성자</th>
-                <th class="px-4 py-3 text-center">제목</th>
-                <th class="px-4 py-3 text-center">모집 인원</th>
-                <th class="px-4 py-3 text-center">모집 마감(D-day)</th>
-                <th class="px-4 py-3 text-center">조회수</th>
-              </tr>
+             <th class="px-2 py-3 text-center">주제</th>
+              <th class="px-4 py-3 text-center">작성자</th>
+              <th class="px-4 py-3 text-center">제목</th>
+              <th class="px-4 py-3 text-center">모집 인원</th>
+              <th class="px-4 py-3 text-center">모집 상태</th>
+              <th class="px-4 py-3 text-center">모집 마감(D-day)</th>
+              <th class="px-4 py-3 text-center">조회 수</th>
             </thead>
             <tbody>
               <tr>
@@ -45,7 +45,7 @@
 
 
       <!-- 잡담 게시판 -->
-       <div class="pt-20">
+      <div class="pt-20">
         <div class="flex items-center justify-between mb-6">
           <h2 class="text-2xl font-bold border-b border-gray-600 pb-2">잡담 게시판</h2>
           <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-semibold">
@@ -79,4 +79,12 @@
 </template>
 
 <script setup lang="ts">
+import { useRouter  } from 'vue-router';
+
+
+const router = useRouter()
+
+function clikProject() {
+  router.push('/projectboard')
+}
 </script>

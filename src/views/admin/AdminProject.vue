@@ -273,6 +273,7 @@ const projectForm = ref({
     category: '',
     participants: '',
     techStack: '',
+    tags: '',
     project_date: ''
 })
 
