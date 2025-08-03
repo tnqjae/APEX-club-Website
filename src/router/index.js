@@ -6,10 +6,12 @@ import Team       from '@/views/user/Team.vue'
 import Project    from '@/views/user/Project.vue'
 import Gallery    from '@/views/user/Gallery.vue'
 import Staff from '@/views/user/Staff.vue'
-import Board from '@/views/user/Board.vue'
+import Board from '@/views/user/board/Board.vue'
 import Professor from '@/views/user/Professor.vue'
 import Login from '@/views/login/UserLogin.vue'
 import Register from '@/views/login/SignUp.vue'
+import CreatePost from '@/views/user/board/CreatePost.vue'
+import ProjectBoard from '@/views/user/board/ProjectBoard.vue'
 //Admin areas
 import AdminLogin from '@/views/admin/AdminLogin.vue'
 import AdminMain from '@/views/admin/adminMain.vue'
@@ -31,6 +33,9 @@ const routes = [
   { path: '/gallery',     component: Gallery        },
   { path: '/login',       component: Login          },
   { path: '/register',    component: Register       },
+  { path: '/createpost',  component: CreatePost     },
+  { path: '/projectboard', component: ProjectBoard   },
+  
   // Admin routes
   { path: '/admin-login', component: AdminLogin     },
   { path: '/adminMain', component: AdminMain        },
