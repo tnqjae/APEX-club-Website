@@ -10,22 +10,10 @@ import CryptoJS from 'crypto-js'
 const REST_KEY = import.meta.env.VITE_KAKAO_REST_API_KEY as string
 const REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI as string
 const LOGIN_API = import.meta.env.VITE_USERLOGIN_API as string
-const AES_KEY = import.meta.env.VITE_ENCRYPTION_KEY
-const AES_IV = import.meta.env.VITE_ENCRYPTION_IV
+
 
 const route = useRoute()
 const router = useRouter()
-
-function encrypt(text: string): string {
-  const key = CryptoJS.enc.Utf8.parse(AES_KEY)
-  const iv = CryptoJS.enc.Utf8.parse(AES_IV)
-  const encrypted = CryptoJS.AES.encrypt(text, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  })
-  return encrypted.toString()
-}
 
 onMounted(async () => {
   const code = route.query.code as string | undefined
@@ -44,12 +32,12 @@ onMounted(async () => {
     const kakaoId = me.id.toString()
     const nickname = me.kakao_account?.profile?.nickname ?? 'Unknown'
 
-    const encryptedId = encrypt(kakaoId)
+
 
     const response = await fetch(LOGIN_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id: encryptedId }),
+      body: JSON.stringify({ id: kakaoId }),
     })
     const result = await response.json()
 
@@ -70,7 +58,7 @@ onMounted(async () => {
       router.replace({
         path: '/register',
         query: {
-          kakaoId: encryptedId,
+          kakaoId: kakaoId,
           name: nickname,
         },
       })

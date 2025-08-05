@@ -73,10 +73,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import CryptoJS from 'crypto-js'
-
-const AES_KEY = import.meta.env.VITE_ENCRYPTION_KEY
-const AES_IV = import.meta.env.VITE_ENCRYPTION_IV
 
 const route = useRoute()
 const router = useRouter()
@@ -94,17 +90,6 @@ const form = ref({
   agree_privacy: false,
 })
 
-function encrypt(text: string): string {
-  const key = CryptoJS.enc.Utf8.parse(AES_KEY)
-  const iv = CryptoJS.enc.Utf8.parse(AES_IV)
-  const encrypted = CryptoJS.AES.encrypt(text, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  })
-  return encrypted.toString()
-}
-
 const error = ref('')
 
 onMounted(() => {
@@ -117,7 +102,7 @@ onMounted(() => {
     return
   }
 
-  form.value.kakaoId = encrypt(kakaoId)
+  form.value.kakaoId = kakaoId
   form.value.name = name || ''
 })
 
@@ -160,8 +145,8 @@ const submitForm = async () => {
 
   const payload = {
     ...form.value,
-    email: encrypt(form.value.email),
-    stuId: encrypt(form.value.stuId),
+    email: form.value.email,
+    stuId: form.value.stuId,
   }
 
   try {
