@@ -87,9 +87,10 @@
   </div>
 </template>
 
-<<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import CryptoJS from 'crypto-js'
 
 const router = useRouter()
 
@@ -102,6 +103,9 @@ const API_URL = import.meta.env.VITE_USER_LIST_API
 const ACCEPT_API = import.meta.env.VITE_USER_ACCEPT_API
 const REJECT_API = import.meta.env.VITE_USER_REJECT_API
 const AUTH_API = import.meta.env.VITE_AUTH_API
+const AES_KEY = import.meta.env.VITE_ENCRYPTION_KEY
+const AES_IV = import.meta.env.VITE_ENCRYPTION_IV
+
 
 function closeModal() {
   showModal.value = false
@@ -142,6 +146,16 @@ onMounted(async () => {
   }
 })
 
+function decrypt(cipher: string): string {
+  const key = CryptoJS.enc.Utf8.parse(AES_KEY)
+  const iv = CryptoJS.enc.Utf8.parse(AES_IV)
+  const decrypted = CryptoJS.AES.decrypt(cipher, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  })
+  return decrypted.toString(CryptoJS.enc.Utf8)
+}
 
 async function fetchUsers() {
   loading.value = true
@@ -154,17 +168,23 @@ async function fetchUsers() {
     if (!res.ok) throw new Error('유저 조회 실패')
 
     const data = await res.json()
-    pendingUsers.value = data.filter(u => u.state === 'PENDING')
-    approvedUsers.value = data.filter(u => u.state === 'ACCEPTED')
+
+    // EMAIL만 복호화
+    const processedData = data.map(u => ({
+      ...u,
+      EMAIL: decrypt(u.EMAIL) // 이메일만 복호화
+    }))
+
+    pendingUsers.value = processedData.filter(u => u.state === 'PENDING')
+    approvedUsers.value = processedData.filter(u => u.state === 'ACCEPTED')
   } catch (e) {
     console.error(e)
     errorMsg.value = '유저 목록을 불러오는 중 오류가 발생했습니다.'
   } finally {
     loading.value = false
   }
+  
 }
-
-
 async function updateUserStatus(userId, isAccept) {
   const url = isAccept ? ACCEPT_API : REJECT_API
   try {
@@ -187,4 +207,5 @@ function acceptUser(userId) {
 function rejectUser(userId) {
   updateUserStatus(userId, false)
 }
+
 </script>

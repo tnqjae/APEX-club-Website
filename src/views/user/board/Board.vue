@@ -87,4 +87,6 @@ const router = useRouter()
 function clikProject() {
   router.push('/projectboard')
 }
+
+async 
 </script>
