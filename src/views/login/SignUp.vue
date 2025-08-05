@@ -13,42 +13,51 @@
       <h2 class="text-3xl font-bold text-center">회원가입</h2>
 
       <form @submit.prevent="submitForm" class="space-y-6">
-
+        <!-- 이름 -->
         <div>
           <label class="block mb-1 text-sm text-gray-400">이름</label>
-          <input
-            v-model="form.name"
-            class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600"
-            placeholder="이름을 입력하세요"
-            required
-          />
+          <input v-model="form.name" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600" placeholder="이름을 입력하세요" required />
         </div>
 
+        <!-- 학과 -->
         <div>
           <label class="block mb-1 text-sm text-gray-400">학과</label>
-          <input
-            v-model="form.major"
-            class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600"
-            placeholder="학과를 입력하세요"
-            required
-          />
+          <input v-model="form.major" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600" placeholder="학과를 입력하세요" required />
         </div>
 
+        <!-- 학번 -->
+        <div>
+          <label class="block mb-1 text-sm text-gray-400">학번</label>
+          <input v-model="form.stuId" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600" placeholder="학번을 입력하세요" required />
+        </div>
+
+        <!-- 이메일 -->
         <div>
           <label class="block mb-1 text-sm text-gray-400">이메일</label>
-          <input
-            v-model="form.email"
-            type="email"
-            class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600"
-            placeholder="이메일을 입력하세요"
-            required
-          />
+          <input v-model="form.email" type="email" class="w-full p-3 rounded bg-gray-800 text-white border border-gray-600" placeholder="이메일을 입력하세요" required />
         </div>
 
-        <button
-          type="submit"
-          class="w-full bg-yellow-400 hover:bg-yellow-300 text-black py-3 rounded font-bold text-lg transition hover:scale-105 active:scale-95"
-        >
+        <!-- 약관 동의 -->
+        <div class="space-y-4">
+          <div class="flex items-start space-x-2">
+            <input type="checkbox" v-model="form.agree_terms" class="mt-1" />
+            <div class="text-sm">
+              <span>이용약관에 동의합니다</span>
+              <button type="button" @click="showTermsModal = true" class="ml-2 text-blue-400 underline">약관 보기</button>
+            </div>
+          </div>
+
+          <div class="flex items-start space-x-2">
+            <input type="checkbox" v-model="form.agree_privacy" class="mt-1" />
+            <div class="text-sm">
+              <span>개인정보 수집 및 이용에 동의합니다</span>
+              <button type="button" @click="showPrivacyModal = true" class="ml-2 text-blue-400 underline">내용 보기</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 제출 버튼 -->
+        <button type="submit" class="w-full bg-yellow-400 hover:bg-yellow-300 text-black py-3 rounded font-bold text-lg transition hover:scale-105 active:scale-95">
           회원가입
         </button>
       </form>
@@ -56,21 +65,45 @@
       <p v-if="error" class="text-red-400 text-center text-sm mt-4">{{ error }}</p>
     </div>
   </section>
+
+  <!-- 모달 템플릿은 그대로 유지 -->
+  <!-- ... -->
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
+import CryptoJS from 'crypto-js'
+
+const AES_KEY = import.meta.env.VITE_ENCRYPTION_KEY
+const AES_IV = import.meta.env.VITE_ENCRYPTION_IV
 
 const route = useRoute()
 const router = useRouter()
+
+const showTermsModal = ref(false)
+const showPrivacyModal = ref(false)
 
 const form = ref({
   kakaoId: '',
   name: '',
   major: '',
   email: '',
+  stuId: '',
+  agree_terms: false,
+  agree_privacy: false,
 })
+
+function encrypt(text: string): string {
+  const key = CryptoJS.enc.Utf8.parse(AES_KEY)
+  const iv = CryptoJS.enc.Utf8.parse(AES_IV)
+  const encrypted = CryptoJS.AES.encrypt(text, key, {
+    iv: iv,
+    mode: CryptoJS.mode.CBC,
+    padding: CryptoJS.pad.Pkcs7
+  })
+  return encrypted.toString()
+}
 
 const error = ref('')
 
@@ -84,23 +117,59 @@ onMounted(() => {
     return
   }
 
-  form.value.kakaoId = kakaoId
+  form.value.kakaoId = encrypt(kakaoId)
   form.value.name = name || ''
 })
 
+const validateForm = () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const studentIdRegex = /^[0-9]+$/
+  const nameMajorRegex = /^[가-힣a-zA-Z0-9\s]+$/
+
+  if (!emailRegex.test(form.value.email)) {
+    error.value = '유효한 이메일 형식이 아닙니다.'
+    return false
+  }
+  if (!studentIdRegex.test(form.value.stuId)) {
+    error.value = '학번은 숫자만 입력해야 합니다.'
+    return false
+  }
+  if (!nameMajorRegex.test(form.value.name)) {
+    error.value = '이름에는 특수문자를 사용할 수 없습니다.'
+    return false
+  }
+  if (!nameMajorRegex.test(form.value.major)) {
+    error.value = '학과에는 특수문자를 사용할 수 없습니다.'
+    return false
+  }
+  return true
+}
+
 const submitForm = async () => {
-  if (!form.value.name || !form.value.major || !form.value.email) {
+  error.value = ''
+
+  if (!form.value.name || !form.value.major || !form.value.email || !form.value.stuId) {
     error.value = '모든 필드를 입력해 주세요.'
     return
+  }
+  if (!form.value.agree_terms || !form.value.agree_privacy) {
+    error.value = '약관에 모두 동의해야 회원가입이 가능합니다.'
+    return
+  }
+  if (!validateForm()) return
+
+  const payload = {
+    ...form.value,
+    email: encrypt(form.value.email),
+    stuId: encrypt(form.value.stuId),
   }
 
   try {
     const res = await fetch(import.meta.env.VITE_USER_REGISTER_API, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(form.value),
+      body: JSON.stringify(payload),
     })
-
     const result = await res.json()
 
     if (!res.ok || result.error) {
@@ -113,4 +182,14 @@ const submitForm = async () => {
     error.value = err.message || '오류가 발생했습니다.'
   }
 }
+
+watch(() => form.value.name, (val) => {
+  form.value.name = val.replace(/[^가-힣a-zA-Z0-9\s]/g, '')
+})
+watch(() => form.value.major, (val) => {
+  form.value.major = val.replace(/[^가-힣a-zA-Z0-9\s]/g, '')
+})
+watch(() => form.value.stuId, (val) => {
+  form.value.stuId = val.replace(/[^0-9]/g, '')
+})
 </script>
