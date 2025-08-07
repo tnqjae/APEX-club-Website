@@ -146,16 +146,6 @@ onMounted(async () => {
   }
 })
 
-function decrypt(cipher: string): string {
-  const key = CryptoJS.enc.Utf8.parse(AES_KEY)
-  const iv = CryptoJS.enc.Utf8.parse(AES_IV)
-  const decrypted = CryptoJS.AES.decrypt(cipher, key, {
-    iv: iv,
-    mode: CryptoJS.mode.CBC,
-    padding: CryptoJS.pad.Pkcs7
-  })
-  return decrypted.toString(CryptoJS.enc.Utf8)
-}
 
 async function fetchUsers() {
   loading.value = true
@@ -172,7 +162,6 @@ async function fetchUsers() {
     // EMAIL만 복호화
     const processedData = data.map(u => ({
       ...u,
-      EMAIL: decrypt(u.EMAIL) // 이메일만 복호화
     }))
 
     pendingUsers.value = processedData.filter(u => u.state === 'PENDING')
